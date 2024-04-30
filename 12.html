@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arithmetic Sequence Calculator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: blue;
+            color: white;
+        }
+        #output {
+            background-color: orange;
+            padding: 10px;
+        }
+    </style>
+    <script>
+        function calculateNthTerm(a, d, n) {
+            return a + (n - 1) * d;
+        }
+
+        function parseFraction(fraction) {
+            const [numerator, denominator] = fraction.split('/');
+            return parseFloat(numerator) / parseFloat(denominator);
+        }
+
+        function startSequence() {
+            const sequence = [];
+            let sum = 0;
+            let continueInput = true;
+
+            const term1 = parseFloat(document.getElementById('term1').value);
+            const term2 = parseFloat(document.getElementById('term2').value);
+            const term3 = parseFloat(document.getElementById('term3').value);
+            const term4 = parseFloat(document.getElementById('term4').value);
+
+            if (isNaN(term1) || isNaN(term2) || isNaN(term3) || isNaN(term4)) {
+                alert("Invalid input. Please enter numbers only.");
+                return;
+            }
+
+            const inputsTable = document.getElementById('inputsTable');
+            inputsTable.rows[1].cells[1].innerText = term1;
+            inputsTable.rows[2].cells[1].innerText = term2;
+            inputsTable.rows[3].cells[1].innerText = term3;
+            inputsTable.rows[4].cells[1].innerText = term4;
+
+            sequence.push(term1, term2, term3, term4);
+            sum = term1 + term2 + term3 + term4;
+
+            const commonDifference = term2 - term1;
+            const startValue = term1;
+
+            const target = parseFloat(prompt("Enter the target number to stop the sequence and print:"));
+            let output = "Sequence: ";
+            let currentValue = startValue;
+            let n = sequence.length;
+
+            while (currentValue <= target) {
+                output += currentValue + ", ";
+                sum += currentValue;
+                currentValue += commonDifference;
+                sequence.push(currentValue);
+                ++n;
+            }
+
+            output += "<br>Sum of the sequence until the target: " + sum + "<br>";
+            output += "General term formula of the sequence: an = " + sequence[0] + " + (n * " + commonDifference + ")<br>";
+
+            const position = parseInt(prompt("Enter the position of the term you want to extract from the sequence:"));
+            if (position >= 1 && position <= n) {
+                output += "The value of the term at position " + position + " in the sequence is: " + sequence[position - 1];
+            } else {
+                output += "Invalid position. The position must be between 1 and " + n + ".";
+            }
+
+            document.getElementById('output').innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1>Arithmetic Sequence Calculator</h1>
+    <table id="inputsTable">
+        <tr>
+            <th colspan="2" style="text-align: center;">Inputs</th>
+        </tr>
+        <tr>
+            <td>1st Term:</td>
+            <td><input type="text" id="term1"></td>
+        </tr>
+        <tr>
+            <td>2nd Term:</td>
+            <td><input type="text" id="term2"></td>
+        </tr>
+        <tr>
+            <td>3rd Term:</td>
+            <td><input type="text" id="term3"></td>
+        </tr>
+        <tr>
+            <td>4th Term:</td>
+            <td><input type="text" id="term4"></td>
+        </tr>
+    </table>
+    <button onclick="startSequence()">Start Sequence</button>
+    <div id="output"></div>
+</body>
+</html>
